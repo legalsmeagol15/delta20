@@ -22,3 +22,25 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# ---- Formatting & linting for tests (simple) ----
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-select = ["I", "UP", "S", "B", "C90"]  # imports, py-upgrades, security, bugbear, mccabe
+ignore = ["S101"]  # allow assert in tests
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+plugins = []
+mypy_path = "src"
