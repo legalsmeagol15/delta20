@@ -4,12 +4,19 @@
 - d20 faces indexed 0..19.
 - Each face has corners (0,1,2) CCW, edges E0/E1/E2.
 
+## Indexing
+- A given triangle index or FaceIdx is 64 packed bits:
+        d20        lod        path (MSD)     flags
+     (5 bits) | (5 bits) |    (46 bits)   | (8 bits)
+- A vertex index or VertexIdx is 64 packed bits:
+     (TBD)
+
 ## Subdivision
 - Children: 0,1,2 = corner children; 3 = center. Corners children are numbered along with the vertex.
 - Orientation: 
     For north-oriented children, child 0 is NORTH, 1 is SW, and 2 is SE.
     For south-oriented children, child 0 is SOUTH, 1 is NE, and 2 is NW
-- Path is base-4 digits (MSB-deep): youngest digit in the lowest 2 bits.
+- Path is base-4 digits (MSB-deep): finest digit in the (lod*2)th bits.
 
 ## Orientation ("flip")
 - flip = base_flip[d20] XOR (count of digit==3 in path) % 2

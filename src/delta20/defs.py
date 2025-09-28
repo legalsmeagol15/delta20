@@ -1,0 +1,3 @@
+
+VertexIdx = int
+FaceIdx = int
