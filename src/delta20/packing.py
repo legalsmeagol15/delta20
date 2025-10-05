@@ -10,6 +10,10 @@ _flag_mask = (0b1 << 8) - 1
 
 
 def get_pos(path: int, lod: int) -> int:
+    '''
+    Given a 46-bit path, and a level of detail ("LOD") from [0..22], return the position of the 
+    triangle within its parent at that LOD.
+    '''
     # Path is a base 4 value tracking the position from the d20 parent (but in base 2, of course),
     # starting at the most significant digit packed left. There are up to 23 levels of detail
     # (LODs).
