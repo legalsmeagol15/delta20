@@ -21,7 +21,7 @@ def get_canonicals():
 
         # Step #1a: Find the canonical indexing. The original vertices are not "owned" by any face
         # in the way the later vertices are, so we give arbitrary value 0b11111 for the d20 face.
-        packed_vi = pack_vertex_idx(lod=0, d20=0, index=idx)
+        packed_vi = pack_vertex_idx(lod=0, d20=0b11111, index=idx)
         vert_to_vertex_idx[idx] = packed_vi
 
         # Step #1b: normalize the vertex.
@@ -68,13 +68,13 @@ def get_canonicals():
 
         # Step 3b: assure 0th vertex is the polar orientation vertex.
         verts = tuple(raw_vertices[vi] for vi in face)
-        assert verts[1][2] == verts[2][2]
+        assert verts[1][1] == verts[2][1], f"d20_idx: {d20_idx}, face: {face}, verts1:{verts[1]}, verts2:{verts[2]}"
         # while verts[1][2] != verts[2][2]:
         #     face = (face[1], face[2], face[0])
         #     verts = tuple(raw_vertices[vi] for vi in face)
 
         # Step 3c: determine polarity
-        south = verts[0][2] < verts[1][2]
+        south = verts[0][1] < verts[1][1]
 
         # Step #3d: pack the face_idx.
         packed_fi = pack_face_idx(lod=0, d20=d20_idx, path=0, south=south)
