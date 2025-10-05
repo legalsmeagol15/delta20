@@ -9,6 +9,21 @@ _vertex_idx_mask = (1 << 51) - 1
 _flag_mask = (0b1 << 8) - 1
 
 
+def get_pos(path: int, lod: int) -> int:
+    # Path is a base 4 value tracking the position from the d20 parent (but in base 2, of course),
+    # starting at the most significant digit packed left. There are up to 23 levels of detail
+    # (LODs).
+    # Example: 0b 01 11 10 ... 11
+    #             ^  ^  ^      ^
+    #         LOD=0  |  |      |
+    #            LOD=1  |      |
+    #               LOD=2      |
+    #                     LOD=22
+    # To align the a given LOD's bits into the rightmost position (so we can mask with 0b11 and
+    # figure out if we're looking at 0, 1, 2, or 3), we will right-shift ((22 - lod) * 2) bits.
+    return (2 * (path >> (22 - lod))) & 0b11
+
+
 def pack_face_idx(lod: int, d20: int, path: int, south: bool) -> FaceIdx:
     # The 64 bits of a face_idx are packed like so:
     #    lod        d20        path (MSD)     flags
@@ -46,5 +61,14 @@ def unpack_vertex_idx(vertex_idx: VertexIdx) -> Tuple[int, int, int]:
     return lod, d20, index
 
 
+def face_idx_to_str(face_idx: FaceIdx):
+    lod, d20, path, flags = unpack_face_idx(face_idx)
+    values = []
+    for _l in range(0, lod):
+        v = get_pos(path, _l)
+        values.append(str(v))
+    return f"lod={lod}, d20={d20}, path={''.join(values)}, flags={bin(flags)}"
+
+
 __all__ = ["pack_face_idx", "pack_vertex_idx",
-           "unpack_face_idx", "unpack_vertex_idx"]
+           "unpack_face_idx", "unpack_vertex_idx", "face_idx_to_str"]
