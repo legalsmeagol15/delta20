@@ -25,7 +25,7 @@ def get_pos(path: int, lod: int) -> int:
     #                     LOD=22
     # To align the a given LOD's bits into the rightmost position (so we can mask with 0b11 and
     # figure out if we're looking at 0, 1, 2, or 3), we will right-shift ((22 - lod) * 2) bits.
-    return (2 * (path >> (22 - lod))) & 0b11
+    return (path >> (2 * (22 - lod))) & 0b11
 
 
 def pack_face_idx(lod: int, d20: int, path: int, south: bool) -> FaceIdx:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, Tuple, List, Mapping, Sequence
 from math import sqrt, hypot, atan2
-from delta20.packing import *
+from delta20.packing import get_pos, pack_face_idx, unpack_face_idx
 from delta20.precomputed.canonical_d20 import _canonical_neighbors
 from delta20.precomputed.raw_d20 import raw_neighbors
 
