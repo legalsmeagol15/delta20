@@ -109,11 +109,12 @@ def get_canonicals():
         canonical_neighbors[n_idx] = tuple(face_to_face_idx[fi] for fi in n)
 
     # Done.
-    return canonical_verts, canonical_faces, canonical_neighbors
+    return canonical_verts, canonical_faces, canonical_neighbors, face_to_face_idx
 
 
 if __name__ == '__main__':
-    verts, faces, neighbors = get_canonicals()
+    verts, faces, neighbors, map_faces = get_canonicals()
     print(f"_canonical_verts = {verts}")
     print(f"_canonical_faces = {faces}")
     print(f"_canonical_neighbors = {neighbors}")
+    print(f"_raw_to_canonical_faces = {map_faces}")
