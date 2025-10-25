@@ -2,6 +2,7 @@ from __future__ import annotations
 from delta20.packing import pack_face_idx, pack_vertex_idx
 from delta20.defs import VertexIdx, FaceIdx
 from delta20.precomputed.raw_d20 import raw_vertices, raw_faces
+from delta20.precomputed.canonical_d20 import _raw_to_canonical_faces
 from typing import Dict, Tuple, List
 from math import sqrt
 
@@ -77,7 +78,7 @@ def get_canonicals():
         south = verts[0][1] < verts[1][1]
 
         # Step #3d: pack the face_idx.
-        packed_fi = pack_face_idx(lod=0, d20=d20_idx, path=0, south=south)
+        packed_fi = pack_face_idx(lod=0, d20=d20_idx, path=0, is_south=south)
         face_to_face_idx[d20_idx] = packed_fi
         canonical_faces[packed_fi] = tuple(
             vert_to_vertex_idx[vi] for vi in face)
