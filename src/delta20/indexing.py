@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Dict, Tuple, List, Mapping, Sequence
+from typing import Dict, Tuple, List, Mapping, Sequence, Callable
+
 from math import sqrt, hypot, atan2
 from delta20.packing import build_path, get_pos, pack_face_idx, unpack_face_idx, face_idx_to_str
 from delta20.precomputed.canonical_d20 import CANONICAL_FACES_INDEXED
@@ -112,6 +113,34 @@ def find_neighbor(face_idx: FaceIdx, edge: int) -> Tuple[FaceIdx, int]:
 
     # Done.
     return pack_face_idx(orig_lod, nbr_d20, nbr_path, nbr_is_south), nbr_edge
+
+
+# <--------------------path-finding--------------------->
+TChoiceHeuristic = Callable[[FaceIdx, FaceIdx], Tuple[int, int, int]]
+TWeightHeuristic = Callable[[FaceIdx, FaceIdx], float]
+
+
+def _default_choice_heuristic(start: FaceIdx, target: FaceIdx) -> Tuple[int, int, int]:
+    # TODO: a dumb dijksta's algorithm can find a path, but we can be more clever by looking at
+    # ancestor triangles.
+    return (0, 1, 2)
+
+
+def _default_weight_finder(start: FaceIdx, target: FaceIdx) -> float:
+    return 1.0
+
+
+def find_path(
+        start: FaceIdx,
+        target: FaceIdx,
+        choice_heuristic: TChoiceHeuristic = _default_choice_heuristic,
+        weight_heuristic: TWeightHeuristic = _default_weight_finder):
+    '''
+    Returns a path list starting from 'start' and going to 'target'. The path list will be accompanied 
+    '''
+    result = []
+
+    raise NotImplementedError()
 
 
 if __name__ == '__main__':
